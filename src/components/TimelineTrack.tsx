@@ -70,6 +70,12 @@ const Container = styled.div`
   background: #f8fafc;
   min-height: 100vh;
   font-family: 'Segoe UI', Tahoma, sans-serif;
+  @media (max-width: 900px) {
+    padding: 20px;
+  }
+  @media (max-width: 640px) {
+    padding: 16px;
+  }
 `;
 
 const Header = styled.div`
@@ -82,6 +88,12 @@ const Header = styled.div`
   color: #1e293b;
   border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  gap: 12px;
+  flex-wrap: wrap;
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const NavBtn = styled.button`
@@ -103,6 +115,9 @@ const TimelineBoard = styled.div<{ $border: string; $card: string }>`
   border: 1px solid ${props => props.$border};
   border-radius: 12px;
   overflow: hidden;
+  @media (max-width: 900px) {
+    overflow-x: auto;
+  }
 `;
 
 const GridLayer = styled.div<{ $sidebarWidth: number; $windowDays: number }>`
@@ -114,6 +129,13 @@ const GridLayer = styled.div<{ $sidebarWidth: number; $windowDays: number }>`
   display: grid;
   grid-template-columns: repeat(${props => props.$windowDays}, 1fr);
   pointer-events: none;
+  min-width: 700px;
+  @media (max-width: 900px) {
+    min-width: 600px;
+  }
+  @media (max-width: 640px) {
+    min-width: 520px;
+  }
 `;
 
 const GridCol = styled.div<{ $grid: string }>`
@@ -132,6 +154,11 @@ const ProjectRow = styled.div<{ $rowHeight: number }>`
   border-bottom: 1px solid #f1f5f9;
   position: relative;
   &:last-child { border-bottom: none; }
+  @media (max-width: 640px) {
+    height: auto;
+    min-height: 96px;
+    flex-direction: column;
+  }
 `;
 
 const Sidebar = styled.div<{ $sidebarWidth: number }>`
@@ -145,6 +172,17 @@ const Sidebar = styled.div<{ $sidebarWidth: number }>`
   color: #1e293b;
   border-right: 2px solid #f1f5f9;
   z-index: 10;
+  @media (max-width: 900px) {
+    width: 180px;
+    min-width: 180px;
+  }
+  @media (max-width: 640px) {
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 12px 16px;
+  }
 `;
 
 const Track = styled.div`
@@ -152,6 +190,14 @@ const Track = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  min-width: 700px;
+  @media (max-width: 900px) {
+    min-width: 600px;
+  }
+  @media (max-width: 640px) {
+    min-width: 520px;
+    padding: 8px 0 12px;
+  }
 `;
 
 const ProjectRangeBox = styled.div<{ $left: number; $width: number; $color: string; $bg: string }>`

@@ -1,4 +1,3 @@
-import './App.css'
 import TimelineTrack from './components/TimelineTrack'
 import type { Project } from './components/TimelineTrack'
 
@@ -37,16 +36,8 @@ function App() {
   ]
 
   return (
-    <div className="app">
-      <header className="hero">
-        <p className="eyebrow">Timeline Track</p>
-        <h1>Enterprise-ready timeline with milestones and status.</h1>
-        <p className="subhead">
-          Publishable component with configurable props and theming.
-        </p>
-      </header>
+      
       <TimelineTrack projects={projects} />
-    </div>
   )
 }
 

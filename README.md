@@ -7,13 +7,13 @@ Enterprise-ready React timeline component for projects and milestones, with stat
 ## Install
 
 ```bash
-npm i @shivamjadhav/timeline-track
+npm i @shivamjadhav28/timeline-track
 ```
 
 ## Usage
 
 ```tsx
-import { TimelineTrack, type Project } from '@shivamjadhav/timeline-track';
+import { TimelineTrack, type Project } from '@shivamjadhav28/timeline-track';
 
 const projects: Project[] = [
   {

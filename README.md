@@ -2,7 +2,7 @@
 
 Enterprise-ready React timeline component for projects and milestones, with status-aware colors and range navigation.
 
-![Timeline Track Preview](public/preview.png)
+![Timeline Track Preview](https://raw.githubusercontent.com/shivamjadhav2000/timeline-track/main/public/preview.png)
 
 ## Install
 

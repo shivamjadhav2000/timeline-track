@@ -2,6 +2,8 @@
 
 Enterprise-ready React timeline component for projects and milestones, with status-aware colors and range navigation.
 
+![Timeline Track Preview](public/preview.png)
+
 ## Install
 
 ```bash

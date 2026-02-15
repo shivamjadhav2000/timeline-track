@@ -1,5 +1,5 @@
 {
-  "name": "@shivamjadhav/timeline-track",
+  "name": "@shivamjadhav28/timeline-track",
   "version": "0.1.0",
   "description": "Enterprise-ready React timeline component with project ranges and milestones.",
   "type": "module",
@@ -52,6 +52,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/styled-components": "^5.1.36",
+    "@types/minimatch": "^5.1.2",
     "@vitejs/plugin-react": "^5.1.1",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",

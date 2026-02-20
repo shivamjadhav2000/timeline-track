@@ -107,6 +107,33 @@ export interface Project {
 npm run build
 ```
 
+## Publish
+
+If you use npm 2FA, publish with a **Granular Access Token** (recommended):
+
+1. Create a token on npmjs.com:
+   - Scope: `@shivamjadhav28`
+   - Permissions: **Read and Publish**
+   - 2FA: **bypass publish**
+2. Login with the token:
+   ```bash
+   npm logout
+   npm login --auth-type=legacy
+   ```
+   - Username: `shivamjadhav28`
+   - Password: **paste the token**
+   - Email: your npm email
+3. Bump version and publish:
+   ```bash
+   npm version patch
+   npm publish --access public
+   ```
+
+Check who you’re logged in as:
+```bash
+npm whoami
+```
+
 ## License
 
 MIT

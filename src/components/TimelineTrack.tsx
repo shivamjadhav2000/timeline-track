@@ -226,7 +226,7 @@ const TodayLine = styled.div<{ $percent: number; $sidebarWidth: number; $color: 
 
 // --- Component ---
 
-interface TimelineProps {
+export interface TimelineProps {
   projects: Project[];
   viewDate?: Date;
   windowDays?: number;

@@ -2,7 +2,7 @@
 
 Enterprise-ready React timeline component for projects and milestones, with status-aware colors and range navigation.
 
-![Timeline Track Preview](https://raw.githubusercontent.com/shivamjadhav2000/timeline-track/main/public/preview.png)
+![Timeline Track Preview](https://raw.githubusercontent.com/shivamjadhav28/timeline-track/main/public/preview.png)
 
 ## Install
 
@@ -26,8 +26,26 @@ const projects: Project[] = [
       { id: 'm2', name: 'Security', endDate: new Date('2026-02-14'), status: 'success' },
     ],
   },
+  {
+    id: 'p2',
+    projectName: 'Mobile Refresh',
+    projectStart: new Date('2026-02-11'),
+    projectEnd: new Date('2026-02-13'),
+    milestones: [
+      { id: 'm3', name: 'UI Update', endDate: new Date('2026-02-12'), status: 'completed' },
+      { id: 'm4', name: 'Beta', endDate: new Date('2026-02-13'), status: 'pending' },
+    ],
+  },
+  {
+    id: 'p3',
+    projectName: 'HR Portal',
+    projectStart: new Date('2026-02-15'),
+    projectEnd: new Date('2026-02-25'),
+    milestones: [
+      { id: 'm5', name: 'Form Logic', endDate: new Date('2026-02-16'), status: 'pending' },
+    ],
+  },
 ];
-
 export default function Example() {
   return <TimelineTrack projects={projects} />;
 }
@@ -76,6 +94,12 @@ export interface Project {
   milestones: Milestone[];
 }
 ```
+
+## Status Rules
+
+- Project is **green** if all milestones are `completed` or `success`.
+- Project is **red** if end date is past today and not all milestones are complete.
+- Milestone is **red** if status is `in-progress` and end date is past today.
 
 ## Build
 

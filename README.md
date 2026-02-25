@@ -75,16 +75,31 @@ export default function Example() {
 - `onViewDateChange`: `(date: Date) => void`
 - `windowDays`: number (default `7`)
 - `showTodayLine`: boolean (default `true`)
-- `sidebarWidth`: number (default `220`)
-- `rowHeight`: number (default `120`)
-- `rangeIconSize`: number (default `16`)
 - `showHeader`: boolean (default `true`)
 - `title`: string (default `Team Roadmap`)
 - `prevLabel`: string (default `Day`)
 - `nextLabel`: string (default `Day`)
 - `todayLabel`: string (default `Today`)
-- `colors`: partial theme override
 - `className`: string
+- `style`: `CSSProperties` (root container)
+- `theme`: design token overrides (colors, sizes, spacing)
+
+### Theme
+
+```ts
+type TimelineTheme = {
+  colors?: Partial<TimelineColors>;
+  spacing?: {
+    padding?: number;
+    headerPadding?: number;
+  };
+  sizes?: {
+    sidebarWidth?: number;
+    rowHeight?: number;
+    rangeIconSize?: number;
+  };
+};
+```
 
 ## Types
 

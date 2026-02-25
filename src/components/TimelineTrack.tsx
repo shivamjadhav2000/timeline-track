@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import {
@@ -49,6 +50,19 @@ export type TimelineColors = {
   text: string;
 };
 
+export type TimelineTheme = {
+  colors?: Partial<TimelineColors>;
+  spacing?: {
+    padding?: number;
+    headerPadding?: number;
+  };
+  sizes?: {
+    sidebarWidth?: number;
+    rowHeight?: number;
+    rangeIconSize?: number;
+  };
+};
+
 const DEFAULT_COLORS: TimelineColors = {
   primary: '#3b82f6',
   success: '#10b981',
@@ -82,9 +96,9 @@ const Header = styled.div<{ $bg: string; $color: string }>`
   box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
 `;
 
-const NavBtn = styled.button<{ $bg: string }>` 
+const NavBtn = styled.button<{ $bg: string; $color?: string }>` 
   background: ${props => props.$bg}; 
-  color: white; 
+  color: ${props => props.$color || 'white'}; 
   border: none; 
   padding: 8px 16px; 
   border-radius: 6px; 
@@ -112,6 +126,7 @@ const GridLayer = styled.div<{ $sidebarWidth: number; $windowDays: number }>`
   display: grid; 
   grid-template-columns: repeat(${props => props.$windowDays}, 1fr); 
   pointer-events: none; 
+  z-index: 0;
 `;
 
 const GridCol = styled.div<{ $grid: string; $color: string }>` 
@@ -129,23 +144,32 @@ const ProjectRow = styled.div<{ $rowHeight: number; $border: string }>`
   height: ${props => props.$rowHeight}px; 
   border-bottom: 1px solid ${props => props.$border}; 
   position: relative; 
+  z-index: 1;
   &:last-child { border-bottom: none; } 
 `;
 
-const Sidebar = styled.div<{ $sidebarWidth: number; $color: string; $border: string }>` 
+const Sidebar = styled.div<{ $sidebarWidth: number; $color: string; $border: string ; $bg: string }>` 
   width: ${props => props.$sidebarWidth}px; 
   min-width: ${props => props.$sidebarWidth}px; 
-  background: rgba(255,255,255,1); 
+  background: ${props => props.$bg}; 
   display: flex; 
   align-items: center; 
   padding: 0 20px; 
   font-weight: 700; 
   color: ${props => props.$color}; 
   border-right: 2px solid ${props => props.$border}; 
-  z-index: 10; 
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 `;
 
-const Track = styled.div` flex-grow: 1; position: relative; display: flex; align-items: center; `;
+const Track = styled.div` 
+  flex-grow: 1; 
+  position: relative; 
+  display: flex; 
+  align-items: center; 
+  overflow: hidden;
+`;
 
 const ProjectRangeBox = styled.div<{ $left: number; $width: number; $color: string; $bg: string }>` 
   position: absolute; 
@@ -212,7 +236,6 @@ const TodayLine = styled.div<{ $percent: number; $sidebarWidth: number; $color: 
   bottom: 0; 
   width: 2px; 
   background: ${props => props.$color}; 
-  z-index: 20; 
   &::after {
     content: 'TODAY';
     position: absolute;
@@ -232,16 +255,14 @@ export interface TimelineProps {
   windowDays?: number;
   onViewDateChange?: (date: Date) => void;
   showTodayLine?: boolean;
-  sidebarWidth?: number;
-  rowHeight?: number;
-  rangeIconSize?: number;
   showHeader?: boolean;
   title?: string;
   prevLabel?: string;
   nextLabel?: string;
   todayLabel?: string;
   className?: string;
-  colors?: Partial<TimelineColors>;
+  style?: CSSProperties;
+  theme?: TimelineTheme;
 }
 
 export default function TimelineTrack({
@@ -250,18 +271,21 @@ export default function TimelineTrack({
   windowDays = 7,
   onViewDateChange,
   showTodayLine = true,
-  sidebarWidth = 220,
-  rowHeight = 120,
-  rangeIconSize = 16,
   showHeader = true,
   title = 'Team Roadmap',
   prevLabel = 'Day',
   nextLabel = 'Day',
   todayLabel = 'Today',
   className,
-  colors,
+  style,
+  theme,
 }: TimelineProps) {
-  const mergedColors = { ...DEFAULT_COLORS, ...colors };
+  const mergedColors = { ...DEFAULT_COLORS, ...theme?.colors };
+  const sidebarWidth = theme?.sizes?.sidebarWidth ?? 220;
+  const rowHeight = theme?.sizes?.rowHeight ?? 120;
+  const rangeIconSize = theme?.sizes?.rangeIconSize ?? 16;
+  const padding = theme?.spacing?.padding ?? 30;
+  const headerPadding = theme?.spacing?.headerPadding ?? 15;
   const [internalDate, setInternalDate] = useState(new Date());
   const currentViewDate = viewDate ?? internalDate;
   
@@ -281,9 +305,6 @@ const days = useMemo(() => {
 
 const windowStart = days[0].getTime();
 const DAY_MS = 24 * 60 * 60 * 1000;
-
-// Percentage width of exactly one day column
-const oneDayWidth = 100 / windowDays;
 
 const getRelativePercent = (date: Date, offset = 0) => {
   const d = new Date(date);
@@ -320,22 +341,30 @@ const getRelativePercent = (date: Date, offset = 0) => {
   };
 
   return (
-    <Container $bg={mergedColors.background} className={className}>
+    <Container
+      $bg={mergedColors.background}
+      className={className}
+      style={{ padding, ...style }}
+    >
       {showHeader && (
-        <Header $bg={mergedColors.card} $color={mergedColors.text}>
+        <Header
+          $bg={mergedColors.card}
+          $color={mergedColors.text}
+          style={{ padding: `${headerPadding}px ${headerPadding * 1.6}px` }}
+        >
           <h2 style={{ margin: 0 }}>{title}</h2>
           <div style={{ display: 'flex', gap: '10px' }}>
-            <NavBtn $bg={mergedColors.text} onClick={() => shift(-1)}>
+            <NavBtn $bg={mergedColors.background} $color={mergedColors.text} onClick={() => shift(-1)}>
               <ChevronLeft size={18}/> {prevLabel}
             </NavBtn>
-            <NavBtn $bg={mergedColors.text} onClick={() => {
+            <NavBtn $bg={mergedColors.background} $color={mergedColors.text} onClick={() => {
               const now = new Date();
               if (onViewDateChange) onViewDateChange(now);
               else setInternalDate(now);
             }}>
               <Calendar size={18}/> {todayLabel}
             </NavBtn>
-            <NavBtn $bg={mergedColors.text} onClick={() => shift(1)}>
+            <NavBtn $bg={mergedColors.background} $color={mergedColors.text} onClick={() => shift(1)}>
               {nextLabel} <ChevronRight size={18}/>
             </NavBtn>
           </div>
@@ -355,7 +384,7 @@ const getRelativePercent = (date: Date, offset = 0) => {
           <TodayLine 
             $percent={getRelativePercent(today, 0)} 
             $sidebarWidth={sidebarWidth} 
-            $color={mergedColors.danger} 
+            $color={mergedColors.danger}
           />
         )}
 
@@ -371,14 +400,24 @@ const getRelativePercent = (date: Date, offset = 0) => {
 
   return (
     <ProjectRow key={p.id} $rowHeight={rowHeight} $border={mergedColors.grid}>
-      <Sidebar $sidebarWidth={sidebarWidth} $color={mergedColors.text} $border={mergedColors.grid}>
+      <Sidebar
+        $sidebarWidth={sidebarWidth}
+        $color={mergedColors.text}
+        $bg={bg}
+        $border={mergedColors.grid}
+      >
         {p.projectName}
       </Sidebar>
       <Track>
         <BaseLine $color={mergedColors.muted} />
         
         {rangeWidth > 0 && (
-          <ProjectRangeBox $left={rangeLeft} $width={rangeWidth} $color={color} $bg={bg}>
+          <ProjectRangeBox
+            $left={rangeLeft}
+            $width={rangeWidth}
+            $color={color}
+            $bg={bg}
+          >
             <StartIcon size={rangeIconSize} color={color} fill={color} />
             <EndIcon size={rangeIconSize} color={color} fill={color} />
           </ProjectRangeBox>
